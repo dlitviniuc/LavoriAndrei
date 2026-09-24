@@ -38,7 +38,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            flex-grow: 1; /* Pushes footer to the bottom if content is short */
+            flex-grow: 1; 
             width: 100%;
         }
         
@@ -82,7 +82,6 @@
             border-color: var(--accent-green);
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
             animation: fadeIn 0.4s ease-in-out;
@@ -135,37 +134,68 @@
         .media-card {
             display: flex;
             flex-direction: column;
+            text-decoration: none;
         }
         
-        /* Enlarged Image Cards */
-        .image-card iframe {
-            width: 100%;
-            height: 65vh;
-            border: none;
-            display: block;
-            background-color: var(--bg-skeleton);
-            border-radius: 12px;
-        }
-
-        /* Video Wrapper */
-        .video-wrapper {
+        /* Fast Native Image/Video Previews */
+        .media-preview {
             position: relative;
             width: 100%;
-            max-width: calc(75vh * (9 / 16));
-            aspect-ratio: 9 / 16;
+            aspect-ratio: 9 / 16; /* Forces strict portrait size */
+            max-height: 70vh; /* Prevents them from getting too tall on desktop */
             margin: 0 auto;
             background-color: var(--bg-skeleton);
             border-radius: 12px;
             overflow: hidden;
+            display: block;
         }
-        
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .media-preview img {
             width: 100%;
             height: 100%;
-            border: none;
+            object-fit: cover; /* Ensures images fill the box perfectly without stretching */
+            transition: transform 0.3s ease;
+        }
+
+        .media-card:hover .media-preview img {
+            transform: scale(1.03); /* Subtle zoom on hover */
+        }
+
+        /* Play Button Overlay for Videos */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(18, 18, 18, 0.7);
+            border: 2px solid var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+        }
+
+        .play-overlay::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent var(--accent-green);
+            margin-left: 5px; /* Centers the triangle */
+        }
+
+        .media-card:hover .play-overlay {
+            background-color: var(--accent-green);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .media-card:hover .play-overlay::after {
+            border-color: transparent transparent transparent #121212;
         }
         
         /* Clean Link Button */
@@ -235,21 +265,9 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .media-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            .image-card iframe {
-                height: 60vh;
-            }
-            .contact-info {
-                flex-direction: column;
-                gap: 15px;
-                align-items: center;
-            }
+            body { padding: 10px; }
+            .media-grid { grid-template-columns: 1fr; gap: 15px; }
+            .contact-info { flex-direction: column; gap: 15px; align-items: center; }
         }
     </style>
 </head>
@@ -272,28 +290,32 @@
                 <div class="folder-title">Appartamento 1</div>
                 
                 <div class="media-grid">
-                    <div class="media-card video-card">
-                        <div class="video-wrapper">
-                            <iframe src="https://drive.google.com/file/d/1GhaSivcmKKk9ukjGV9xJGuwSjGRqgj1u/preview" allow="autoplay"></iframe>
+                    <a href="https://drive.google.com/file/d/1GhaSivcmKKk9ukjGV9xJGuwSjGRqgj1u/view" target="_blank" class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=1GhaSivcmKKk9ukjGV9xJGuwSjGRqgj1u&sz=w1000" alt="Video Preview">
+                            <div class="play-overlay"></div>
                         </div>
-                        <a href="https://drive.google.com/file/d/1GhaSivcmKKk9ukjGV9xJGuwSjGRqgj1u/view" target="_blank" class="open-link">Open in Drive</a>
-                    </div>
+                        <span class="open-link">Open Video</span>
+                    </a>
                 </div>
                 
                 <div class="subfolder">
                     <div class="subfolder-title">Bagno</div>
                     <div class="media-grid">
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1bOf70ThgAsMoxuFG_2MnyFeF5w1_8hsV/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1bOf70ThgAsMoxuFG_2MnyFeF5w1_8hsV/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1z_OtnZnzQgxV9vVK7F6V41zgOkUrd5Ai&sz=w1000" alt="Bagno Image">
+                            </div>
                         </div>
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1z_OtnZnzQgxV9vVK7F6V41zgOkUrd5Ai/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1z_OtnZnzQgxV9vVK7F6V41zgOkUrd5Ai/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1PusBlMvzd41ryB-hBHEjz5g0hBUtU-ta&sz=w1000" alt="Bagno Image">
+                            </div>
                         </div>
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1PusBlMvzd41ryB-hBHEjz5g0hBUtU-ta/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1PusBlMvzd41ryB-hBHEjz5g0hBUtU-ta/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1bOf70ThgAsMoxuFG_2MnyFeF5w1_8hsV&sz=w1000" alt="Bagno Image">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -301,21 +323,25 @@
                 <div class="subfolder">
                     <div class="subfolder-title">Cucina</div>
                     <div class="media-grid">
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1MeWMz4yb4wu0Q_tit6n_WCeW0Ap3RCFY/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1MeWMz4yb4wu0Q_tit6n_WCeW0Ap3RCFY/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1OZNP1D60alPebICMCQgb3lEuatq2i_FO&sz=w1000" alt="Cucina Image">
+                            </div>
                         </div>
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1PF6cqi-lyh6ZOLHMSK6uZb_kYuIBoODF/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1PF6cqi-lyh6ZOLHMSK6uZb_kYuIBoODF/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1nbdZ3qmEZQzxch4RLVRuPTmuj442HyKC&sz=w1000" alt="Cucina Image">
+                            </div>
                         </div>
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1OZNP1D60alPebICMCQgb3lEuatq2i_FO/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1OZNP1D60alPebICMCQgb3lEuatq2i_FO/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1PF6cqi-lyh6ZOLHMSK6uZb_kYuIBoODF&sz=w1000" alt="Cucina Image">
+                            </div>
                         </div>
-                        <div class="media-card image-card">
-                            <iframe src="https://drive.google.com/file/d/1nbdZ3qmEZQzxch4RLVRuPTmuj442HyKC/preview"></iframe>
-                            <a href="https://drive.google.com/file/d/1nbdZ3qmEZQzxch4RLVRuPTmuj442HyKC/view" target="_blank" class="open-link">Open in Drive</a>
+                        <div class="media-card">
+                            <div class="media-preview">
+                                <img src="https://drive.google.com/thumbnail?id=1MeWMz4yb4wu0Q_tit6n_WCeW0Ap3RCFY&sz=w1000" alt="Cucina Image">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -326,24 +352,30 @@
         <div id="app2" class="tab-content">
             <div class="folder">
                 <div class="folder-title">Appartamento 2</div>
-                <div class="media-grid">
-                    <div class="media-card image-card">
-                        <iframe src="https://drive.google.com/file/d/1trygrny4t8-WFg9UGtv5rmDEwOa2S1UU/preview"></iframe>
-                        <a href="https://drive.google.com/file/d/1trygrny4t8-WFg9UGtv5rmDEwOa2S1UU/view" target="_blank" class="open-link">Open in Drive</a>
-                    </div>
-                    <div class="media-card image-card">
-                        <iframe src="https://drive.google.com/file/d/1J7CMXMuTeRQuFYiz2aDDtktVTy7374_A/preview"></iframe>
-                        <a href="https://drive.google.com/file/d/1J7CMXMuTeRQuFYiz2aDDtktVTy7374_A/view" target="_blank" class="open-link">Open in Drive</a>
-                    </div>
-                    <div class="media-card image-card">
-                        <iframe src="https://drive.google.com/file/d/1DG8hebOGFLmlFqQglth8JLEiANR0hHar/preview"></iframe>
-                        <a href="https://drive.google.com/file/d/1DG8hebOGFLmlFqQglth8JLEiANR0hHar/view" target="_blank" class="open-link">Open in Drive</a>
-                    </div>
-                    <div class="media-card video-card">
-                        <div class="video-wrapper">
-                            <iframe src="https://drive.google.com/file/d/12eSXCkowfKiAtjFYJhoVVrbPuyltqOZy/preview" allow="autoplay"></iframe>
+                 <div class="media-grid">
+                    <a href="https://drive.google.com/file/d/12eSXCkowfKiAtjFYJhoVVrbPuyltqOZy/view" target="_blank" class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=12eSXCkowfKiAtjFYJhoVVrbPuyltqOZy&sz=w1000" alt="Video Preview">
+                            <div class="play-overlay"></div>
                         </div>
-                        <a href="https://drive.google.com/file/d/12eSXCkowfKiAtjFYJhoVVrbPuyltqOZy/view" target="_blank" class="open-link">Open in Drive</a>
+                        <span class="open-link">Open Video</span>
+                    </a>
+                </div>
+                <div class="media-grid">
+                    <div class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=1trygrny4t8-WFg9UGtv5rmDEwOa2S1UU&sz=w1000" alt="Appartamento 2 Image">
+                        </div>
+                    </div>
+                    <div class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=1J7CMXMuTeRQuFYiz2aDDtktVTy7374_A&sz=w1000" alt="Appartamento 2 Image">
+                        </div>
+                    </div>
+                    <div class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=1DG8hebOGFLmlFqQglth8JLEiANR0hHar&sz=w1000" alt="Appartamento 2 Image">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -354,12 +386,13 @@
             <div class="folder">
                 <div class="folder-title">Appartamento 3</div>
                 <div class="media-grid">
-                    <div class="media-card video-card">
-                        <div class="video-wrapper">
-                            <iframe src="https://drive.google.com/file/d/1vR7CY33c8YdH21s03g5SiLpBP0zZpAFj/preview" allow="autoplay"></iframe>
+                    <a href="https://drive.google.com/file/d/1vR7CY33c8YdH21s03g5SiLpBP0zZpAFj/view" target="_blank" class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=1vR7CY33c8YdH21s03g5SiLpBP0zZpAFj&sz=w1000" alt="Video Preview">
+                            <div class="play-overlay"></div>
                         </div>
-                        <a href="https://drive.google.com/file/d/1vR7CY33c8YdH21s03g5SiLpBP0zZpAFj/view" target="_blank" class="open-link">Open in Drive</a>
-                    </div>
+                        <span class="open-link">Open Video</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -369,12 +402,13 @@
             <div class="folder">
                 <div class="folder-title">Appartamento 4</div>
                 <div class="media-grid">
-                    <div class="media-card video-card">
-                        <div class="video-wrapper">
-                            <iframe src="https://drive.google.com/file/d/1q8b603ca5__a4QltbegrKkQqCM0sVYBY/preview" allow="autoplay"></iframe>
+                    <a href="https://drive.google.com/file/d/1q8b603ca5__a4QltbegrKkQqCM0sVYBY/view" target="_blank" class="media-card">
+                        <div class="media-preview">
+                            <img src="https://drive.google.com/thumbnail?id=1q8b603ca5__a4QltbegrKkQqCM0sVYBY&sz=w1000" alt="Video Preview">
+                            <div class="play-overlay"></div>
                         </div>
-                        <a href="https://drive.google.com/file/d/1q8b603ca5__a4QltbegrKkQqCM0sVYBY/view" target="_blank" class="open-link">Open in Drive</a>
-                    </div>
+                        <span class="open-link">Open Video</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -394,6 +428,10 @@
                 <div class="contact-item">
                     <span class="contact-label">Email:</span> 
                     <a href="mailto:litviniuc.andrei@gmail.com">litviniuc.andrei@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-label">PEC:</span> 
+                    <a href="mailto:litviniuc.andrei@pec.buffetti.com">litviniuc.andrei@pec.buffetti.com</a>
                 </div>
             </div>
         </footer>
