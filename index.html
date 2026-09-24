@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impresa Edile Litviniuc Andrei</title>
+    <style>
+        /* Modern Dark Theme Variables */
+        :root {
+            --bg-main: #121212;
+            --bg-card: #1e1e1e;
+            --bg-subcard: #252525;
+            --bg-hover: #2c2c2c;
+            --accent-green: #10b981;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--accent-green);
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Tab Navigation Styles */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 12px 28px;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button:hover {
+            background-color: var(--bg-hover);
+            color: var(--text-main);
+        }
+        
+        .tab-button.active {
+            background-color: var(--accent-green);
+            color: #ffffff;
+            border-color: var(--accent-green);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .folder {
+            padding: 25px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .folder-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .subfolder {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--bg-subcard);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-green);
+        }
+        
+        .subfolder-title {
+            font-size: 1.3em;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        /* Media Grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 30px;
+        }
+        
+        .media-card {
+            background: var(--bg-subcard);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .media-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            border-color: #444;
+        }
+        
+        .media-card iframe {
+            width: 100%;
+            border: none;
+            display: block;
+            background-color: #000; 
+        }
+
+        /* Fixed height for Images */
+        .image-card iframe {
+            height: 400px;
+        }
+
+        /* Screen-Scaled Height for Portrait Videos (9:16) */
+        .video-card {
+            align-items: center; /* Centers the video horizontally */
+            background-color: #000; /* Black borders if grid column is wider than video */
+        }
+        
+        .video-card iframe {
+            width: 100%;
+            /* Mathematically bind the max-width to the max-height to preserve 9:16 ratio */
+            max-width: calc(70vh * (9 / 16)); 
+            height: auto;
+            max-height: 70vh; /* Video will never exceed 70% of the user's screen height */
+            aspect-ratio: 9 / 16;
+        }
+        
+        .open-link {
+            width: 100%;
+            box-sizing: border-box;
+            display: block;
+            text-align: center;
+            padding: 14px;
+            background-color: var(--bg-subcard);
+            color: var(--accent-green);
+            text-decoration: none;
+            font-size: 0.95em;
+            font-weight: 600;
+            border-top: 1px solid var(--border-color);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: auto; /* Pushes the link to the bottom */
+        }
+        
+        .open-link:hover {
+            background-color: var(--accent-green);
+            color: #ffffff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+            .image-card iframe {
+                height: 300px;
+            }
+            .tab-button {
+                flex-grow: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Impresa Edile Litviniuc Andrei</h1>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('app1', this)">Appartamento 1</button>
+            <button class="tab-button" onclick="openTab('app2', this)">Appartamento 2</button>
+            <button class="tab-button" onclick="openTab('app3', this)">Appartamento 3</button>
+            <button class="tab-button" onclick="openTab('app4', this)">Appartamento 4</button>
+        </div>
+
+        <!-- Appartamento 1 Tab -->
+        <div id="app1" class="tab-content active">
+            <div class="folder">
+                <div class="folder-title">Appartamento 1</div>
+                
+                <div class="media-grid">
+                    <div class="media-card video-card">
+                        <iframe src="https://drive.google.com/file/d/1GhaSivcmKKk9ukjGV9xJGuwSjGRqgj1u/preview" allow="autoplay"></iframe>
+                        <a href="https://drive.google.com/file/d/1GhaSivcmKKk9ukjGV9xJGuwSjGRqgj1u/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                </div>
+                
+                <div class="subfolder">
+                    <div class="subfolder-title">Bagno</div>
+                    <div class="media-grid">
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1bOf70ThgAsMoxuFG_2MnyFeF5w1_8hsV/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1bOf70ThgAsMoxuFG_2MnyFeF5w1_8hsV/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1z_OtnZnzQgxV9vVK7F6V41zgOkUrd5Ai/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1z_OtnZnzQgxV9vVK7F6V41zgOkUrd5Ai/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1PusBlMvzd41ryB-hBHEjz5g0hBUtU-ta/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1PusBlMvzd41ryB-hBHEjz5g0hBUtU-ta/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subfolder">
+                    <div class="subfolder-title">Cucina</div>
+                    <div class="media-grid">
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1MeWMz4yb4wu0Q_tit6n_WCeW0Ap3RCFY/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1MeWMz4yb4wu0Q_tit6n_WCeW0Ap3RCFY/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1PF6cqi-lyh6ZOLHMSK6uZb_kYuIBoODF/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1PF6cqi-lyh6ZOLHMSK6uZb_kYuIBoODF/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1OZNP1D60alPebICMCQgb3lEuatq2i_FO/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1OZNP1D60alPebICMCQgb3lEuatq2i_FO/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                        <div class="media-card image-card">
+                            <iframe src="https://drive.google.com/file/d/1nbdZ3qmEZQzxch4RLVRuPTmuj442HyKC/preview"></iframe>
+                            <a href="https://drive.google.com/file/d/1nbdZ3qmEZQzxch4RLVRuPTmuj442HyKC/view" target="_blank" class="open-link">Open in Drive</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appartamento 2 Tab -->
+        <div id="app2" class="tab-content">
+            <div class="folder">
+                <div class="folder-title">Appartamento 2</div>
+                <div class="media-grid">
+                    <div class="media-card image-card">
+                        <iframe src="https://drive.google.com/file/d/1trygrny4t8-WFg9UGtv5rmDEwOa2S1UU/preview"></iframe>
+                        <a href="https://drive.google.com/file/d/1trygrny4t8-WFg9UGtv5rmDEwOa2S1UU/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                    <div class="media-card image-card">
+                        <iframe src="https://drive.google.com/file/d/1J7CMXMuTeRQuFYiz2aDDtktVTy7374_A/preview"></iframe>
+                        <a href="https://drive.google.com/file/d/1J7CMXMuTeRQuFYiz2aDDtktVTy7374_A/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                    <div class="media-card image-card">
+                        <iframe src="https://drive.google.com/file/d/1DG8hebOGFLmlFqQglth8JLEiANR0hHar/preview"></iframe>
+                        <a href="https://drive.google.com/file/d/1DG8hebOGFLmlFqQglth8JLEiANR0hHar/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                    <div class="media-card video-card">
+                        <iframe src="https://drive.google.com/file/d/12eSXCkowfKiAtjFYJhoVVrbPuyltqOZy/preview" allow="autoplay"></iframe>
+                        <a href="https://drive.google.com/file/d/12eSXCkowfKiAtjFYJhoVVrbPuyltqOZy/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appartamento 3 Tab -->
+        <div id="app3" class="tab-content">
+            <div class="folder">
+                <div class="folder-title">Appartamento 3</div>
+                <div class="media-grid">
+                    <div class="media-card video-card">
+                        <iframe src="https://drive.google.com/file/d/1vR7CY33c8YdH21s03g5SiLpBP0zZpAFj/preview" allow="autoplay"></iframe>
+                        <a href="https://drive.google.com/file/d/1vR7CY33c8YdH21s03g5SiLpBP0zZpAFj/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appartamento 4 Tab -->
+        <div id="app4" class="tab-content">
+            <div class="folder">
+                <div class="folder-title">Appartamento 4</div>
+                <div class="media-grid">
+                    <div class="media-card video-card">
+                        <iframe src="https://drive.google.com/file/d/1q8b603ca5__a4QltbegrKkQqCM0sVYBY/preview" allow="autoplay"></iframe>
+                        <a href="https://drive.google.com/file/d/1q8b603ca5__a4QltbegrKkQqCM0sVYBY/view" target="_blank" class="open-link">Open in Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Tab Switching -->
+    <script>
+        function openTab(tabId, buttonElement) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            buttonElement.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
